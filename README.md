@@ -92,19 +92,27 @@ For users who prefer working with command line tools, you can run the AI Hedge F
 
 <img width="992" alt="Screenshot 2025-01-06 at 5 50 17 PM" src="https://github.com/user-attachments/assets/e8ca04bf-9989-4a7d-a8b4-34e04666663b" />
 
+**Prerequisites for CLI:**
+- Python 3.11+ ([download here](https://python.org/))
+- uv package manager ([quick install](https://docs.astral.sh/uv/))
+
 Choose one of the following installation methods:
 
-#### Using Poetry
+#### Using uv (Recommended)
 
-1. Install Poetry (if not already installed):
+1. Install uv (if not already installed):
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 2. Install dependencies:
 ```bash
-poetry install
+uv venv --python 3.11
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
 ```
+
+**💡 Tip:** You can skip manual installation and use `./run_cli.sh` which handles all setup automatically!
 
 #### Using Docker
 
@@ -124,9 +132,27 @@ cd docker
 run.bat build
 ```
 
-#### Running the AI Hedge Fund (with Poetry)
+#### Running the AI Hedge Fund (with uv)
+
+**🚀 Recommended: Use the Enhanced CLI Script**
+
+The easiest way to run the AI hedge fund is with our enhanced CLI script that handles all setup automatically:
+
 ```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA
+./run_cli.sh --ticker AAPL,MSFT,NVDA
+```
+
+**This script will:**
+- Check for required dependencies (Python 3.11+, uv)
+- Create and activate a virtual environment
+- Install all Python dependencies automatically
+- Set up your .env file (from .env.example if needed)
+- Run the hedge fund with your specified arguments
+
+**Or run manually:**
+```bash
+source .venv/bin/activate
+python src/main.py --ticker AAPL,MSFT,NVDA
 ```
 
 #### Running the AI Hedge Fund (with Docker)
@@ -144,8 +170,12 @@ run.bat --ticker AAPL,MSFT,NVDA main
 You can also specify a `--ollama` flag to run the AI hedge fund using local LLMs.
 
 ```bash
-# With Poetry:
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --ollama
+# With uv (using script):
+./run_cli.sh --ticker AAPL,MSFT,NVDA --ollama
+
+# With uv (manual):
+source .venv/bin/activate
+python src/main.py --ticker AAPL,MSFT,NVDA --ollama
 
 # With Docker (from docker/ directory):
 # On Linux/Mac:
@@ -158,8 +188,12 @@ run.bat --ticker AAPL,MSFT,NVDA --ollama main
 You can also specify a `--show-reasoning` flag to print the reasoning of each agent to the console.
 
 ```bash
-# With Poetry:
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --show-reasoning
+# With uv (using script):
+./run_cli.sh --ticker AAPL,MSFT,NVDA --show-reasoning
+
+# With uv (manual):
+source .venv/bin/activate
+python src/main.py --ticker AAPL,MSFT,NVDA --show-reasoning
 
 # With Docker (from docker/ directory):
 # On Linux/Mac:
@@ -172,8 +206,12 @@ run.bat --ticker AAPL,MSFT,NVDA --show-reasoning main
 You can optionally specify the start and end dates to make decisions for a specific time period.
 
 ```bash
-# With Poetry:
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01 
+# With uv (using script):
+./run_cli.sh --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01
+
+# With uv (manual):
+source .venv/bin/activate
+python src/main.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01
 
 # With Docker (from docker/ directory):
 # On Linux/Mac:
@@ -183,9 +221,25 @@ poetry run python src/main.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --
 run.bat --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01 main
 ```
 
-#### Running the Backtester (with Poetry)
+#### Running the Backtester (with uv)
+
+**🚀 Recommended: Use the Enhanced CLI Script**
+
+The easiest way to run the backtester is with our enhanced CLI script:
+
 ```bash
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA
+./run_cli.sh --ticker AAPL,MSFT,NVDA --backtest
+```
+
+**This script will:**
+- Handle all environment setup automatically
+- Install dependencies if needed
+- Run the backtester with your specified arguments
+
+**Or run manually:**
+```bash
+source .venv/bin/activate
+python src/backtester.py --ticker AAPL,MSFT,NVDA
 ```
 
 #### Running the Backtester (with Docker)
@@ -207,8 +261,12 @@ run.bat --ticker AAPL,MSFT,NVDA backtest
 You can optionally specify the start and end dates to backtest over a specific time period.
 
 ```bash
-# With Poetry:
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01
+# With uv (using script):
+./run_cli.sh --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01 --backtest
+
+# With uv (manual):
+source .venv/bin/activate
+python src/backtester.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01
 
 # With Docker (from docker/ directory):
 # On Linux/Mac:
@@ -220,8 +278,12 @@ run.bat --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01 ba
 
 You can also specify a `--ollama` flag to run the backtester using local LLMs.
 ```bash
-# With Poetry:
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA --ollama
+# With uv (using script):
+./run_cli.sh --ticker AAPL,MSFT,NVDA --ollama --backtest
+
+# With uv (manual):
+source .venv/bin/activate
+python src/backtester.py --ticker AAPL,MSFT,NVDA --ollama
 
 # With Docker (from docker/ directory):
 # On Linux/Mac:
@@ -239,12 +301,12 @@ The new way to run the AI Hedge Fund is through our web application that provide
 
 #### For Mac/Linux:
 ```bash
-cd app && ./run.sh
+cd app && ./run_uv.sh
 ```
 
 If you get a "permission denied" error, run this first:
 ```bash
-cd app && chmod +x run.sh && ./run.sh
+cd app && chmod +x run_uv.sh && ./run_uv.sh
 ```
 
 #### For Windows:
@@ -253,12 +315,12 @@ cd app && chmod +x run.sh && ./run.sh
 cd app
 
 # Run the app
-\.run.bat
+.\run_uv.bat
 ```
 
 **That's it!** These scripts will:
-1. Check for required dependencies (Node.js, Python, Poetry)
-2. Install all dependencies automatically  
+1. Check for required dependencies (Node.js, Python 3.11+, uv)
+2. Install all dependencies automatically using uv for Python packages
 3. Start both frontend and backend services
 4. **Automatically open your web browser** to the application
 

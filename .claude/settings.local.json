@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(poetry export:*)",
+      "Bash(python3 -m pip install --user poetry)",
+      "Bash(uv venv:*)",
+      "Bash(source:*)",
+      "Bash(uv pip compile:*)",
+      "Bash(uv pip install:*)",
+      "Bash(chmod:*)",
+      "Bash(mv:*)",
+      "Bash(python:*)",
+      "Bash(cat:*)",
+      "Bash(./run_cli.sh:*)",
+      "Bash(timeout:*)",
+      "Bash(/dev/null)",
+      "Bash(./run_uv.sh:*)",
+      "Bash(rm:*)",
+      "Bash(result=$?)",
+      "Bash(if [ $result -eq 0 ])",
+      "Bash(then echo \"✓ CLI handles missing venv correctly\")",
+      "Bash(else echo \"✗ CLI failed with missing venv\")",
+      "Bash(fi)",
+      "Bash(if [ -f \".env\" ])",
+      "Bash(then mv .env .env_backup)",
+      "Bash(if [ -f \".env_backup\" ])",
+      "Bash(then mv .env_backup .env)",
+      "Bash(then echo \"✓ CLI handles missing .env correctly\")",
+      "Bash(else echo \"⚠ CLI may require .env file\")",
+      "Bash(deactivate)",
+      "Bash(uv pip:*)",
+      "Bash(uv:*)",
+      "Bash(echo:*)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(gh repo fork:*)",
+      "Bash(git remote:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

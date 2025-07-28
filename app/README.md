@@ -35,22 +35,22 @@ The AI Hedge Fund consists of:
 
 #### For Mac/Linux:
 ```bash
-./run.sh
+./run_uv.sh
 ```
 
 If you get a "permission denied" error, run this first:
 ```bash
-chmod +x run.sh && ./run.sh
+chmod +x run_uv.sh && ./run_uv.sh
 ```
 
 Or alternatively, you can run:
 ```bash
-bash run.sh
+bash run_uv.sh
 ```
 
 #### For Windows:
 ```cmd
-run.bat
+run_uv.bat
 ```
 
 ### Option 2: Using npm (Alternative)
@@ -59,15 +59,15 @@ cd app && npm install && npm run setup
 ```
 
 **That's it!** These scripts will:
-1. Check for required dependencies (Node.js, Python, Poetry)
-2. Install all dependencies automatically
+1. Check for required dependencies (Node.js, Python 3.11+, uv)
+2. Install all dependencies automatically using uv for Python packages
 3. Start both frontend and backend services
 4. **Automatically open your web browser** to the application
 
 **Requirements:**
 - [Node.js](https://nodejs.org/) (includes npm)
-- [Python 3](https://python.org/)
-- [Poetry](https://python-poetry.org/)
+- [Python 3.11+](https://python.org/)
+- [uv](https://docs.astral.sh/uv/) (Python package manager)
 
 **After running, you can access:**
 - Frontend (Web Interface): http://localhost:5173
@@ -83,7 +83,7 @@ If you prefer to set up each component manually or need more control:
 ### Prerequisites
 
 - Node.js and npm for the frontend
-- Python 3.8+ and Poetry for the backend
+- Python 3.11+ and uv for the backend
 
 ### Installation
 
@@ -111,24 +111,24 @@ GROQ_API_KEY=your-groq-api-key
 FINANCIAL_DATASETS_API_KEY=your-financial-datasets-api-key
 ```
 
-4. Install Poetry (if not already installed):
+4. Install uv (if not already installed):
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 5. Install root project dependencies:
 ```bash
 # From the root directory
-poetry install
+uv venv --python 3.11
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
 ```
 
 6. Install backend app dependencies:
 ```bash
-# Navigate to the backend directory
-cd app/backend
-pip install -r requirements.txt  # If there's a requirements.txt file
-# OR
-poetry install  # If there's a pyproject.toml in the backend directory
+# Dependencies are installed from the root requirements.txt file
+# The backend uses imports from the main project structure
+echo "Backend dependencies are included in the root requirements.txt"
 ```
 
 7. Install frontend app dependencies:
@@ -141,9 +141,10 @@ npm install  # or pnpm install or yarn install
 
 1. Start the backend server:
 ```bash
-# In one terminal, from the backend directory
-cd app/backend
-poetry run uvicorn main:app --reload
+# In one terminal, from the project root directory
+source .venv/bin/activate
+# Run from root to ensure proper Python imports
+uvicorn app.backend.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 2. Start the frontend application:
@@ -188,29 +189,34 @@ Command not found: uvicorn
 ```
 
 **Solution:**
-1. **Clean Poetry environment:**
+1. **Recreate uv environment:**
    ```bash
-   cd app/backend
-   poetry env remove --all
-   poetry install
+   # From project root
+   rm -rf .venv
+   uv venv --python 3.11
+   source .venv/bin/activate
+   uv pip install -r requirements.txt
    ```
 
-2. **Or force reinstall:**
+2. **Verify installation:**
    ```bash
-   cd app/backend
-   poetry install --sync
+   # From project root
+   source .venv/bin/activate
+   python -c "import uvicorn; import fastapi"
    ```
 
-3. **Verify installation:**
+3. **Check uv installation:**
    ```bash
-   cd app/backend
-   poetry run python -c "import uvicorn; import fastapi"
+   uv --version
+   # If uv is not found, reinstall:
+   curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
 #### Python Version Issues
 - **Use Python 3.11**: Python 3.13+ may have compatibility issues
 - **Check your Python version:** `python --version`
 - **Switch Python versions if needed** (using pyenv, conda, etc.)
+- **uv can manage Python versions:** `uv python install 3.11` and `uv venv --python 3.11`
 
 #### Environment Variable Issues
 - **Ensure .env file exists** in the project root directory
